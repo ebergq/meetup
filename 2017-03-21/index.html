@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Elm 2017-03-21</title>
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/league.css" id="theme">
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>Elm</h1>
+        <img width=256 src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Elm_logo.svg" />
+        <p>Eric Bergquist</p>
+      </section>
+
+      <section>
+        <h1>What is Elm?</h1>
+          <p class="fragment" data-fragment-index="0">A purely functional programming language for web development</p>
+      </section>
+
+      <section>
+        <h1>Why Elm?</h1>
+      </section>
+
+      <section>
+        <h1>Fast</h1>
+        <img src="http://elm-lang.org/assets/blog/virtual-dom-charts-old/sampleResults.png" />
+      </section>
+
+      <section>
+        <h1>Statically typed</h1>
+        <p class="fragment" data-fragment-index="0">with user-friendly compiler error messages</p>
+        <p class="fragment" data-fragment-index="1">and type inference</p>
+      </section>
+
+      <section>
+        <h1>Purely functional</h1>
+        <p class="fragment" data-fragment-index="0">Decoupled code</p>
+        <p class="fragment" data-fragment-index="1">Testable code</p>
+        <p class="fragment" data-fragment-index="2">Provable code</p>
+      </section>
+
+      <section>
+        <h1>Everything is immutable</h1>
+        <p class="fragment" data-fragment-index="0">Focus on local contexts and don't worry about other state</p>
+      </section>
+
+      <section>
+        <h1>No null or undefined</h1>
+        <img class="fragment" data-fragment-index="0" src="https://cdn.meme.am/cache/instances/folder918/400x/65215918.jpg" />
+      </section>
+
+      <section>
+        <h1>No runtime exceptions</h1>
+        <p class="fragment" data-fragment-index="0">Reliability and confidence</p>
+      </section>
+
+      <section>
+        <h2>"Compiler driven development"</h2>
+        <p class="fragment" data-fragment-index="0">Refactoring made easy</p>
+      </section>
+
+      <section>
+        <h1>Why not Elm?</h1>
+        <p class="fragment" data-fragment-index="0">Other communities are larger</p>
+        <p class="fragment" data-fragment-index="1">No support for private packages</p>
+        <p class="fragment" data-fragment-index="2">Learning curve?</p>
+      </section>
+
+      <section>
+        <h1>Game of life</h1>
+        <p class="fragment" data-fragment-index="0">Model transition based game</p>
+      </section>
+
+      <section>
+        <h1>Rules</h1>
+        <p>Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.</p>
+        <p>Any live cell with two or three live neighbours lives on to the next generation.</p>
+        <p>Any live cell with more than three live neighbours dies, as if by overpopulation.</p>
+        <p>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</p>
+      </section>
+
+      <section>
+        <pre>
+          <code data-trim data-noescape>
+type alias Cell = (Int, Int)
+
+type alias Board =
+  { size : Int
+  , livingCells : List Cell }
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <pre>
+          <code data-trim data-noescape>
+shouldBeAlive : Board -> Cell -> Bool
+shouldBeAlive board cell =
+  let n = numberOfAliveNeighbours board cell
+  in n == 3 || n == 2 && isAlive board cell
+
+transition : Board -> Board
+transition board =
+  { board | livingCells = board.livingCells
+                          |> List.concatMap (neighbours board)
+                          |> unique
+                          |> List.filter (shouldBeAlive board) }
+          </code>
+        </pre>
+      </section>
+
+    </div>
+  </div>
+  <script src="lib/js/head.min.js"></script>
+  <script src="js/reveal.js"></script>
+
+  <script>
+    // Required, even if empty.
+    Reveal.initialize({
+      controls: false
+    });
+  </script>
+</body>
+</html>
