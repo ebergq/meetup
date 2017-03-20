@@ -77,13 +77,24 @@
 
       <section>
         <h1>Rules</h1>
-        <p>Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.</p>
-        <p>Any live cell with two or three live neighbours lives on to the next generation.</p>
-        <p>Any live cell with more than three live neighbours dies, as if by overpopulation.</p>
-        <p>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</p>
+        <p style="font-size: 60%" class="fragment" data-fragment-index="0">Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.</p>
+        <p style="font-size: 60%" class="fragment" data-fragment-index="1">Any live cell with two or three live neighbours lives on to the next generation.</p>
+        <p style="font-size: 60%" class="fragment" data-fragment-index="2">Any live cell with more than three live neighbours dies, as if by overpopulation.</p>
+        <p style="font-size: 60%" class="fragment" data-fragment-index="3">Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</p>
       </section>
 
       <section>
+        <h2>Example: Block</h2>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Game_of_life_block_with_border.svg" />
+      </section>
+
+      <section>
+        <h2>Example: Blinker (period 2)</h2>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Game_of_life_blinker.gif" />
+      </section>
+
+      <section>
+        <h2>Model</h2>
         <pre>
           <code data-trim data-noescape>
 type alias Cell = (Int, Int)
@@ -96,6 +107,7 @@ type alias Board =
       </section>
 
       <section>
+        <h2>Logic</h2>
         <pre>
           <code data-trim data-noescape>
 shouldBeAlive : Board -> Cell -> Bool
@@ -109,6 +121,85 @@ transition board =
                           |> List.concatMap (neighbours board)
                           |> unique
                           |> List.filter (shouldBeAlive board) }
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>What about rendering?</h2>
+      </section>
+
+      <section>
+        <h2>Render board</h2>
+        <pre>
+          <code>
+renderBoard : Board -> List Form
+renderBoard board = renderBackground :: renderCells board
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>Render cells</h2>
+        <pre>
+          <code>
+renderCells : Board -> List Form
+renderCells board =
+  let cellSize = collageSize / (toFloat board.size)
+  in List.map (renderCell cellSize) board.livingCells
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h2>Render cell</h2>
+        <pre>
+          <code>
+renderCell : Float -> Cell -> Form
+renderCell size (x, y) =
+  rect size size
+  |> filled Color.black
+  |> move (toFloat x * size, toFloat y * size)
+  |> move ((size - collageSize) / 2, (size - collageSize) / 2)
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h1>Demo</h1>
+      </section>
+
+      <section>
+        <h2>Possible improvements</h2>
+        <p class="fragment" data-fragment-index="0">Support for play/pause/step</p>
+        <p class="fragment" data-fragment-index="1">Support for speeding up/slowing down time</p>
+        <p class="fragment" data-fragment-index="2">Dropdown for choosing hardcoded examples</p>
+        <p class="fragment" data-fragment-index="3">Better rendering to support a larger collage</p>
+      </section>
+
+      <section>
+        <h2>Code: Game of Life</h2>
+        <a href="https://github.com/ebergq/game-of-life/tree/master/elm">https://github.com/ebergq/game-of-life/tree/master/elm</a>
+      </section>
+
+      <section>
+        <h2>Presentation</h2>
+        <a href="https://github.com/ebergq/meetup/tree/master/2017-03-21">https://github.com/ebergq/meetup/tree/master/2017-03-21</a>
+      </section>
+
+      <section>
+        <h2>Resources</h2>
+        <p><a style="font-size: 70%" href="https://www.youtube.com/watch?v=FV0DXNB94NE">"Make the Back-End Team Jealous: Elm in Production" by Richard Feldman</a></p>
+        <p><a style="font-size: 70%" href="https://www.youtube.com/watch?v=oYk8CKH7OhE">Evan Czaplicki - Let's be mainstream! User focused design in Elm - Curry On</a></p>
+      </section>
+
+      <section>
+        <h2>Contact</h2>
+        <p><a href="https://github.com/ebergq">https://github.com/ebergq</a></p>
+        <pre>
+          <code>
+mail : String
+mail = concat ["eric", ".", "bergquist", "@", "antura", ".", "se"]
           </code>
         </pre>
       </section>
